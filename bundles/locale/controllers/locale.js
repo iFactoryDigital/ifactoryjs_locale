@@ -2,7 +2,7 @@
 // Require dependencies
 const config     = require('config');
 const extend     = require('extendify');
-const controller = require('controller');
+const Controller = require('controller');
 const middleware = require('i18next-express-middleware');
 
 // Require helpers
@@ -13,7 +13,7 @@ const locale = helper('locale');
  *
  * @priority 100
  */
-class localeController extends controller {
+class LocaleController extends Controller {
 
   /**
    * Construct locale controller class
@@ -207,8 +207,8 @@ class localeController extends controller {
 }
 
 /**
- * Export localeController controller class
+ * Export LocaleController controller class
  *
- * @type {localeController}
+ * @type {LocaleController}
  */
-exports = module.exports = localeController;
+exports = module.exports = LocaleController;

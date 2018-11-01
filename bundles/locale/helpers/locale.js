@@ -2,7 +2,7 @@
 // Require dependencies
 const path       = require('path');
 const extend     = require('extendify');
-const helper     = require('helper');
+const Helper     = require('helper');
 const backend    = require('i18next-node-fs-backend');
 const i18next    = require('i18next');
 const middleware = require('i18next-express-middleware');
@@ -16,7 +16,7 @@ const compiled = cache('locale');
 /**
  * Build locale controller class
  */
-class locale extends helper {
+class LocaleHelper extends Helper {
 
   /**
    * Construct locale controller class
@@ -95,4 +95,4 @@ class locale extends helper {
  *
  * @type {locale}
  */
-exports = module.exports = new locale();
+exports = module.exports = new LocaleHelper();

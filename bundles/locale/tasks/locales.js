@@ -12,7 +12,7 @@ const config = require('config');
  *
  * @task locales
  */
-class localesTask {
+class LocalesTask {
 
   /**
    * Construct locale task class
@@ -145,4 +145,4 @@ class localesTask {
  *
  * @type {localesTask}
  */
-exports = module.exports = localesTask;
+exports = module.exports = LocalesTask;

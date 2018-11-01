@@ -1,16 +1,13 @@
 
-// Require polyfill
-require('@babel/polyfill');
-
 // Create built
 let built = null;
 
 // Require dependencies
 const i18n     = require('i18next');
 const xhrBE    = require('i18next-xhr-backend');
+const Events   = require('events');
 const localBE  = require('i18next-localstorage-backend');
 const backend  = require('i18next-chained-backend');
-const events   = require('events');
 const detector = require('i18next-browser-languagedetector');
 
 // Load riot store
@@ -20,7 +17,7 @@ const socket = require('socket/public/js/bootstrap');
 /**
  * Create locale store
  */
-class LocaleStore extends events {
+class LocaleStore extends Events {
 
   /**
    * Construct riot store
