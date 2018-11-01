@@ -13,11 +13,11 @@ riot.mixin('i18n', {
     if (!this.eden.frontend) {
       // Set default functions
       this.i18n.lang = () => {
-        return this.eden.get('i18n').lng; 
+        return this.eden.get('i18n').lng;
       };
     } else {
       // Load store
-      this.i18n = this.eden.get('i18n') || require('locale/public/js/bootstrap');
+      this.i18n = require('locale/public/js/bootstrap');
 
       // Bind update
       this.i18n.on('update', this.update);
