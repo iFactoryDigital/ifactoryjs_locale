@@ -5,7 +5,7 @@ riot.mixin('i18n', {
   /**
    * On init function
    */
-  'init' : function () {
+  init() {
     // Set value
     this.i18n = this.eden.get('i18n') || {};
 
@@ -17,7 +17,7 @@ riot.mixin('i18n', {
       };
     } else {
       // Load store
-      this.i18n = require('locale/public/js/bootstrap');
+      this.i18n = require('locale/public/js/bootstrap'); // eslint-disable-line global-require
 
       // Bind update
       this.i18n.on('update', this.update);
@@ -37,7 +37,9 @@ riot.mixin('i18n', {
    *
    * @return {String}
    */
-  't' : function (str) {
+  t(...args) {
+    const [str] = args;
+
     // Check helper
     if (this.eden.get('helpers') && this.eden.get('helpers').i18n) {
       // Return helper function
@@ -47,11 +49,11 @@ riot.mixin('i18n', {
     // Check i18n
     if (this.i18n && this.i18n.defaults && !this.i18n.initialized) {
       // Check default
-      if (this.i18n.defaults[JSON.stringify(arguments)]) return this.i18n.defaults[JSON.stringify(arguments)];
+      if (this.i18n.defaults[JSON.stringify(args)]) return this.i18n.defaults[JSON.stringify(args)];
     }
 
     // Check if exists
-    if (this.i18n) return this.i18n.t(...arguments);
+    if (this.i18n) return this.i18n.t(...args);
   },
 
   /**
@@ -59,8 +61,10 @@ riot.mixin('i18n', {
    *
    * @return {String}
    */
-  'lang' : function () {
+  lang(...args) {
     // Check if exists
-    if (this.i18n) return this.i18n.lang(...arguments);
-  }
+    if (this.i18n) return this.i18n.lang(...args);
+
+    return null;
+  },
 });

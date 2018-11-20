@@ -18,13 +18,12 @@ const socket = require('socket/public/js/bootstrap');
  * Create locale store
  */
 class LocaleStore extends Events {
-
   /**
    * Construct riot store
    */
-  constructor () {
+  constructor(...args) {
     // Set observable
-    super(...arguments);
+    super(...args);
 
     // Set i18n
     this.i18n = i18n;
@@ -33,11 +32,11 @@ class LocaleStore extends Events {
     this.t = this.i18n.t.bind(this.i18n);
 
     // Bind methods
-    this.lang  = this.lang.bind(this);
+    this.lang = this.lang.bind(this);
     this.build = this.build.bind(this);
 
     // Bind variables
-    this.loaded      = false;
+    this.loaded = false;
     this.initialized = false;
 
     // Build store
@@ -47,12 +46,12 @@ class LocaleStore extends Events {
   /**
    * Build locale store
    */
-  build () {
+  build() {
     // Load i18n
-    let load = store.get('i18n');
+    const load = store.get('i18n');
 
     // Set values
-    for (let key in load) {
+    for (const key of Object.keys(load)) {
       // Set value
       this[key] = load[key];
     }
@@ -63,7 +62,7 @@ class LocaleStore extends Events {
       if (data.key !== 'i18n') return;
 
       // Set val
-      data.val = this;
+      data.val = this; // eslint-disable-line no-param-reassign
     });
 
     // Set defaults
@@ -115,7 +114,7 @@ class LocaleStore extends Events {
    *
    * @return {String}
    */
-  lang (lang) {
+  lang(lang) {
     // Check language
     if (!lang) {
       // Load language
@@ -130,14 +129,8 @@ class LocaleStore extends Events {
       return this.i18n.language;
     }
 
-    // Log changing
-    console.log('[eden] changing language to ' + lang);
-
     // Change language
     this.i18n.changeLanguage(lang, () => {
-      // Changed language
-      console.log('[eden] changed language to ' + lang);
-
       // Trigger update
       if (this.initialized) {
         // Trigger update
@@ -147,6 +140,8 @@ class LocaleStore extends Events {
         socket.call('lang', this.i18n.language);
       }
     });
+
+    return null;
   }
 }
 
@@ -162,7 +157,7 @@ built = new LocaleStore();
  *
  * @type {LocaleStore}
  */
-exports = module.exports = built;
+module.exports = built;
 
 /**
  * Add locale to window.eden

@@ -17,22 +17,21 @@ const compiled = cache('locale');
  * Build locale controller class
  */
 class LocaleHelper extends Helper {
-
   /**
    * Construct locale controller class
    */
-  constructor () {
+  constructor() {
     // Run super
     super();
 
     // Bind variables
     this.extend = extend({
-      'isDeep'  : true,
-      'inPlace' : false
+      isDeep  : true,
+      inPlace : false,
     });
 
     // Bind methods
-    this.t     = this.t.bind(this);
+    this.t = this.t.bind(this);
     this.build = this.build.bind(this);
 
     // Build
@@ -48,11 +47,12 @@ class LocaleHelper extends Helper {
    *
    * @return {String}
    */
-  t (User, str, opts) {
+  t(User, str, opts) {
     // Check opts
-    opts = opts || {};
+    opts = opts || {};// eslint-disable-line no-param-reassign
 
     // Set lang
+    // eslint-disable-next-line no-param-reassign
     opts.lng = opts.lang || (User ? (User.get('lang') || config.get('i18n.fallbackLng')) : config.get('i18n.fallbackLng'));
 
     // Check locale
@@ -62,9 +62,9 @@ class LocaleHelper extends Helper {
   /**
    * Build locale controller
    */
-  build () {
+  build() {
     // Set langs and namespaces
-    config.set('i18n.ns',   compiled.namespaces);
+    config.set('i18n.ns', compiled.namespaces);
     config.set('i18n.lngs', compiled.locales);
     config.set('i18n.cache.versions', {});
 
@@ -72,9 +72,9 @@ class LocaleHelper extends Helper {
     if (config.get('i18n.lngs')) config.set('i18n.whitelist', config.get('i18n.lngs'));
 
     // Set cache versions for i18n
-    for (let i = 0; i < config.get('i18n.lngs').length; i++) {
+    for (let i = 0; i < config.get('i18n.lngs').length; i += 1) {
       // Set versions
-      config.set('i18n.cache.versions.' + config.get('i18n.lngs')[i], config.get('version'));
+      config.set(`i18n.cache.versions.${config.get('i18n.lngs')[i]}`, config.get('version'));
     }
 
     // Init
@@ -82,10 +82,10 @@ class LocaleHelper extends Helper {
       .use(middleware.LanguageDetector)
       .use(backend)
       .init(this.extend({
-        'preload' : config.get('i18n.lngs'),
-        'backend' : {
-          'loadPath' : path.join(global.appRoot, 'www', 'locales', '{{ns}}.{{lng}}.json')
-        }
+        preload : config.get('i18n.lngs'),
+        backend : {
+          loadPath : path.join(global.appRoot, 'www', 'locales', '{{ns}}.{{lng}}.json'),
+        },
       }, config.get('i18n') || {}));
   }
 }
@@ -95,4 +95,4 @@ class LocaleHelper extends Helper {
  *
  * @type {locale}
  */
-exports = module.exports = new LocaleHelper();
+module.exports = new LocaleHelper();

@@ -13,13 +13,12 @@ const config = require('config');
  * @task locales
  */
 class LocalesTask {
-
   /**
    * Construct locale task class
    *
    * @param {Loader} runner
    */
-  constructor (runner) {
+  constructor(runner) {
     // Set private variables
     this._runner = runner;
 
@@ -27,7 +26,7 @@ class LocalesTask {
     this.extend = extend();
 
     // Bind methods
-    this.run   = this.run.bind(this);
+    this.run = this.run.bind(this);
     this.watch = this.watch.bind(this);
   }
 
@@ -38,7 +37,7 @@ class LocalesTask {
    *
    * @return {Promise}
    */
-  run (files) {
+  run(files) {
     // Return promise
     return new Promise((resolve) => {
       // Grab absolute files
@@ -65,11 +64,8 @@ class LocalesTask {
 
         // Check locale
         if (locale.split('.').length > 1) {
-          // Update namespace
-          namespace = locale.split('.')[0];
-
-          // Update locale
-          locale = locale.split('.')[1];
+          // Update locale and namespace
+          [namespace, locale] = locale.split('.');
         }
 
         // Add to arrays
@@ -83,11 +79,12 @@ class LocalesTask {
         if (!locales[namespace][locale]) locales[namespace][locale] = {};
 
         // Extend locale
+        // eslint-disable-next-line global-require, import/no-dynamic-require
         this.extend(locales[namespace][locale], require(absoluteFile));
       }
 
       // Set locale folder
-      let frontend = path.join(global.appRoot, 'www', 'locales');
+      const frontend = path.join(global.appRoot, 'data', 'www', 'locales');
 
       // Remove cache
       if (fs.existsSync(frontend)) fs.removeSync(frontend);
@@ -96,15 +93,15 @@ class LocalesTask {
       fs.ensureDirSync(frontend);
 
       // Create files
-      for (let namespace of namespaces) {
+      for (const namespace of namespaces) {
         // Ensure namespace exists
-        if (locales.hasOwnProperty(namespace)) {
+        if (Object.prototype.hasOwnProperty.call(locales, namespace)) {
           // Loop for namespaces
-          for (let locale of localeTypes) {
+          for (const locale of localeTypes) {
             // Ensure locale exists
-            if (locales[namespace].hasOwnProperty(locale)) {
+            if (Object.prototype.hasOwnProperty.call(locales[namespace], locale)) {
               // Let path
-              let filePath = path.join(frontend, namespace + '.' + locale + '.json');
+              const filePath = path.join(frontend, `${namespace}.${locale}.json`);
 
               // Write sync
               fs.writeFileSync(filePath, JSON.stringify(locales[namespace][locale]), 'utf8');
@@ -115,8 +112,8 @@ class LocalesTask {
 
       // Get namespaces and Locales
       this._runner.write('locale', {
-        'locales'    : localeTypes,
-        'namespaces' : namespaces
+        locales    : localeTypes,
+        namespaces,
       });
 
       // Restart server
@@ -132,10 +129,10 @@ class LocalesTask {
    *
    * @return {Array}
    */
-  watch () {
+  watch() {
     // Return files
     return [
-      'locales/*'
+      'locales/*',
     ];
   }
 }
@@ -145,4 +142,4 @@ class LocalesTask {
  *
  * @type {localesTask}
  */
-exports = module.exports = LocalesTask;
+module.exports = LocalesTask;
