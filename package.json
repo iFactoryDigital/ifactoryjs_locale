@@ -17,13 +17,14 @@
   },
   "homepage": "https://github.com/eden-js/locale#readme",
   "dependencies": {
-    "extendify": "^1.0.0",
-    "i18next": "^12.0.0",
-    "i18next-browser-languagedetector": "^2.2.3",
+    "deepmerge": "^3.0.0",
+    "globby": "^8.0.1",
+    "i18next": "^13.0.0",
+    "i18next-browser-languagedetector": "^2.2.4",
     "i18next-chained-backend": "^0.1.2",
-    "i18next-express-middleware": "^1.4.1",
+    "i18next-express-middleware": "^1.5.0",
     "i18next-localstorage-backend": "^1.1.4",
-    "i18next-node-fs-backend": "^2.1.0",
+    "i18next-node-fs-backend": "^2.1.1",
     "i18next-xhr-backend": "^1.5.1"
   },
   "devDependencies": {

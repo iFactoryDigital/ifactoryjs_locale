@@ -1,8 +1,8 @@
 // Require dependencies
-const fs     = require('fs-extra');
-const glob   = require('glob');
-const path   = require('path');
-const extend = require('extendify');
+const fs        = require('fs-extra');
+const glob      = require('globby');
+const path      = require('path');
+const deepMerge = require('deepmerge');
 
 // Require local dependencies
 const config = require('config');
@@ -21,9 +21,6 @@ class LocalesTask {
   constructor(runner) {
     // Set private variables
     this._runner = runner;
-
-    // Bind variables
-    this.extend = extend();
 
     // Bind methods
     this.run = this.run.bind(this);
@@ -80,7 +77,7 @@ class LocalesTask {
 
         // Extend locale
         // eslint-disable-next-line global-require, import/no-dynamic-require
-        this.extend(locales[namespace][locale], require(absoluteFile));
+        locales[namespace][locale] = deepMerge(locales[namespace][locale], require(absoluteFile));
       }
 
       // Set locale folder

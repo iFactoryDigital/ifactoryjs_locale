@@ -1,7 +1,7 @@
 
 // Require dependencies
 const config     = require('config');
-const extend     = require('extendify');
+const deepMerge  = require('deepmerge');
 const Controller = require('controller');
 const middleware = require('i18next-express-middleware');
 
@@ -21,11 +21,6 @@ class LocaleController extends Controller {
     // Run super
     super();
 
-    // Bind variables
-    this.extend = extend({
-      isDeep  : true,
-      inPlace : false,
-    });
     this.sessions = {};
 
     // Bind methods
@@ -103,7 +98,7 @@ class LocaleController extends Controller {
 
     // Set i18n variables
     if (!render.i18n) {
-      render.i18n = this.extend({
+      render.i18n = deepMerge({
         lng      : req.language.split(' ')[req.language.split(' ').length - 1],
         load     : 'currentOnly',
         defaults : {},

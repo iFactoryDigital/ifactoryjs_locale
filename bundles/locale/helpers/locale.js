@@ -1,7 +1,7 @@
 
 // Require dependencies
 const path       = require('path');
-const extend     = require('extendify');
+const deepMerge  = require('deepmerge');
 const Helper     = require('helper');
 const backend    = require('i18next-node-fs-backend');
 const i18next    = require('i18next');
@@ -23,12 +23,6 @@ class LocaleHelper extends Helper {
   constructor() {
     // Run super
     super();
-
-    // Bind variables
-    this.extend = extend({
-      isDeep  : true,
-      inPlace : false,
-    });
 
     // Bind methods
     this.t = this.t.bind(this);
@@ -81,7 +75,7 @@ class LocaleHelper extends Helper {
     this.locale = i18next
       .use(middleware.LanguageDetector)
       .use(backend)
-      .init(this.extend({
+      .init(deepMerge({
         preload : config.get('i18n.lngs'),
         backend : {
           loadPath : path.join(global.appRoot, 'www', 'locales', '{{ns}}.{{lng}}.json'),
