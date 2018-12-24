@@ -72,12 +72,9 @@ class LocalesTask {
         // Ensure namespace exists
         if (!locales[namespace]) locales[namespace] = {};
 
-        // Ensure locale exists
-        if (!locales[namespace][locale]) locales[namespace][locale] = {};
-
         // Extend locale
         // eslint-disable-next-line global-require, import/no-dynamic-require
-        locales[namespace][locale] = deepMerge(locales[namespace][locale], require(absoluteFile));
+        locales[namespace][locale] = deepMerge(locales[namespace][locale] || {}, require(absoluteFile));
       }
 
       // Set locale folder

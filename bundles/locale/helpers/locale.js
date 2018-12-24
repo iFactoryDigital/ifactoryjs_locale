@@ -29,7 +29,7 @@ class LocaleHelper extends Helper {
     this.build = this.build.bind(this);
 
     // Build
-    this.build();
+    this.building = this.build();
   }
 
   /**
@@ -56,7 +56,7 @@ class LocaleHelper extends Helper {
   /**
    * Build locale controller
    */
-  build() {
+  async build() {
     // Set langs and namespaces
     config.set('i18n.ns', compiled.namespaces);
     config.set('i18n.lngs', compiled.locales);
@@ -72,15 +72,17 @@ class LocaleHelper extends Helper {
     }
 
     // Init
-    this.locale = i18next
+    i18next
       .use(middleware.LanguageDetector)
       .use(backend)
       .init(deepMerge({
         preload : config.get('i18n.lngs'),
         backend : {
-          loadPath : path.join(global.appRoot, 'www', 'locales', '{{ns}}.{{lng}}.json'),
+          loadPath : path.join(global.appRoot, 'data', 'www', 'locales', '{{ns}}.{{lng}}.json'),
         },
       }, config.get('i18n') || {}));
+
+    this.locale = i18next;
   }
 }
 
