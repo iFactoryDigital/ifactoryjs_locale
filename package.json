@@ -20,7 +20,7 @@
     "deepmerge": "^3.0.0",
     "globby": "^8.0.1",
     "i18next": "^13.0.0",
-    "i18next-browser-languagedetector": "^2.2.4",
+    "i18next-browser-languagedetector": "^2.2.3",
     "i18next-chained-backend": "^0.1.2",
     "i18next-express-middleware": "^1.5.0",
     "i18next-localstorage-backend": "^1.1.4",
@@ -28,8 +28,8 @@
     "i18next-xhr-backend": "^1.5.1"
   },
   "devDependencies": {
-    "@edenjs/eslint-config-eden": "latest",
-    "eslint": "^5.9.0",
+    "@edenjs/eslint-config-eden": "^2.0.14",
+    "eslint": "^5.10.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-jsx-a11y": "^6.1.2",
