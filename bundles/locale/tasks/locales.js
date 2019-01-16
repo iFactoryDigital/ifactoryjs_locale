@@ -1,6 +1,6 @@
 // Require dependencies
 const fs        = require('fs-extra');
-const glob      = require('globby');
+const glob      = require('@edenjs/glob');
 const path      = require('path');
 const deepMerge = require('deepmerge');
 
@@ -34,88 +34,86 @@ class LocalesTask {
    *
    * @return {Promise}
    */
-  run(files) {
-    // Return promise
-    return new Promise((resolve) => {
-      // Grab absolute files
-      let absoluteFiles = [];
+  async run(files) {
+    // Grab absolute files
+    const absoluteFiles = [];
 
-      // Loop files
-      for (const file of files) {
-        // Add globbed file to absolute files
-        absoluteFiles = absoluteFiles.concat(glob.sync(file));
+    // Loop files
+    for (const file of files) {
+      // Add globbed file to absolute files
+      absoluteFiles.push(await glob(file));
+    }
+
+    // Set locales and namespaces
+    const locales     = {};
+    const localeTypes = [];
+    const namespaces  = [];
+
+    // Loop absolute files
+    for (const absoluteFile of absoluteFiles) {
+      // Set locale
+      let locale = path.basename(absoluteFile).replace('.json', '');
+
+      // Set namespace
+      let namespace = config.get('i18n.defaultNS') || 'default';
+
+      // Check locale
+      if (locale.split('.').length > 1) {
+        // Update locale and namespace
+        [namespace, locale] = locale.split('.');
       }
 
-      // Set locales and namespaces
-      const locales     = {};
-      const localeTypes = [];
-      const namespaces  = [];
+      // Add to arrays
+      if (!localeTypes.includes(locale)) localeTypes.push(locale);
+      if (!namespaces.includes(namespace)) namespaces.push(namespace);
 
-      // Loop absolute files
-      for (const absoluteFile of absoluteFiles) {
-        // Set locale
-        let locale = path.basename(absoluteFile).replace('.json', '');
+      // Ensure namespace exists
+      if (!locales[namespace]) locales[namespace] = {};
 
-        // Set namespace
-        let namespace = config.get('i18n.defaultNS') || 'default';
-
-        // Check locale
-        if (locale.split('.').length > 1) {
-          // Update locale and namespace
-          [namespace, locale] = locale.split('.');
-        }
-
-        // Add to arrays
-        if (!localeTypes.includes(locale)) localeTypes.push(locale);
-        if (!namespaces.includes(namespace)) namespaces.push(namespace);
-
-        // Ensure namespace exists
-        if (!locales[namespace]) locales[namespace] = {};
-
-        // Extend locale
-        // eslint-disable-next-line global-require, import/no-dynamic-require
-        locales[namespace][locale] = deepMerge(locales[namespace][locale] || {}, require(absoluteFile));
+      if (!locales[namespace][locale]) {
+        locales[namespace][locale] = {};
       }
 
-      // Set locale folder
-      const frontend = path.join(global.appRoot, 'data', 'www', 'locales');
+      // Extend locale
+      // eslint-disable-next-line global-require, import/no-dynamic-require
+      locales[namespace][locale] = deepMerge(locales[namespace][locale], require(absoluteFile));
+    }
 
-      // Remove cache
-      if (fs.existsSync(frontend)) fs.removeSync(frontend);
+    // Set locale folder
+    const frontend = path.join(global.appRoot, 'data', 'www', 'locales');
 
-      // Mkdir
-      fs.ensureDirSync(frontend);
+    // Remove cache
+    await fs.remove(frontend);
 
-      // Create files
-      for (const namespace of namespaces) {
-        // Ensure namespace exists
-        if (Object.prototype.hasOwnProperty.call(locales, namespace)) {
-          // Loop for namespaces
-          for (const locale of localeTypes) {
-            // Ensure locale exists
-            if (Object.prototype.hasOwnProperty.call(locales[namespace], locale)) {
-              // Let path
-              const filePath = path.join(frontend, `${namespace}.${locale}.json`);
+    // Mkdir
+    await fs.ensureDir(frontend);
 
-              // Write sync
-              fs.writeFileSync(filePath, JSON.stringify(locales[namespace][locale]), 'utf8');
-            }
+    // Create files
+    for (const namespace of namespaces) {
+      // Ensure namespace exists
+      if (Object.prototype.hasOwnProperty.call(locales, namespace)) {
+        // Loop for namespaces
+        for (const locale of localeTypes) {
+          // Ensure locale exists
+          if (Object.prototype.hasOwnProperty.call(locales[namespace], locale)) {
+            // Let path
+            const filePath = path.join(frontend, `${namespace}.${locale}.json`);
+
+            // Write data
+            await fs.writeJson(filePath, locales[namespace][locale]);
           }
         }
       }
+    }
 
-      // Get namespaces and Locales
-      this._runner.write('locale', {
-        locales    : localeTypes,
-        namespaces,
-      });
-
-      // Restart server
-      this._runner.restart();
-
-      // Resolve
-      resolve(true);
+    // Get namespaces and Locales
+    await this._runner.write('locale', {
+      locales    : localeTypes,
+      namespaces,
     });
+
+    // Restart server
+    this._runner.restart();
   }
 
   /**

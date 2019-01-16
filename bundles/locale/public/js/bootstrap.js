@@ -10,7 +10,6 @@ const localBE  = require('i18next-localstorage-backend');
 const backend  = require('i18next-chained-backend');
 const detector = require('i18next-browser-languagedetector');
 
-// Load riot store
 const store  = require('default/public/js/store');
 const socket = require('socket/public/js/bootstrap');
 
@@ -19,7 +18,7 @@ const socket = require('socket/public/js/bootstrap');
  */
 class LocaleStore extends Events {
   /**
-   * Construct riot store
+   * Construct locale store
    */
   constructor(...args) {
     // Set observable
