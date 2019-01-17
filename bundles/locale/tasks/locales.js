@@ -35,22 +35,13 @@ class LocalesTask {
    * @return {Promise}
    */
   async run(files) {
-    // Grab absolute files
-    const absoluteFiles = [];
-
-    // Loop files
-    for (const file of files) {
-      // Add globbed file to absolute files
-      absoluteFiles.push(await glob(file));
-    }
-
     // Set locales and namespaces
     const locales     = {};
     const localeTypes = [];
     const namespaces  = [];
 
     // Loop absolute files
-    for (const absoluteFile of absoluteFiles) {
+    for (const absoluteFile of await glob(files)) {
       // Set locale
       let locale = path.basename(absoluteFile).replace('.json', '');
 
@@ -70,7 +61,7 @@ class LocalesTask {
       // Ensure namespace exists
       if (!locales[namespace]) locales[namespace] = {};
 
-      if (!locales[namespace][locale]) {
+      if (locales[namespace][locale] === null || locales[namespace][locale] === undefined) {
         locales[namespace][locale] = {};
       }
 
