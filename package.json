@@ -19,7 +19,7 @@
   "dependencies": {
     "@edenjs/glob": "^1.0.0",
     "deepmerge": "^3.1.0",
-    "i18next": "^13.1.2",
+    "i18next": "^14.0.0",
     "i18next-browser-languagedetector": "^2.2.4",
     "i18next-chained-backend": "^0.1.2",
     "i18next-express-middleware": "^1.7.1",
