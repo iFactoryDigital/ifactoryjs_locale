@@ -5,6 +5,7 @@ const deepMerge  = require('deepmerge');
 const Helper     = require('helper');
 const backend    = require('i18next-node-fs-backend');
 const i18next    = require('i18next');
+const sprintf    = require('i18next-sprintf-postprocessor');
 const middleware = require('i18next-express-middleware');
 
 // Require local dependencies
@@ -75,6 +76,7 @@ class LocaleHelper extends Helper {
     i18next
       .use(middleware.LanguageDetector)
       .use(backend)
+      .use(sprintf)
       .init(deepMerge({
         preload : config.get('i18n.lngs'),
         backend : {
