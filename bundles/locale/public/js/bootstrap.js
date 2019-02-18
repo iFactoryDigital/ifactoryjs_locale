@@ -8,6 +8,7 @@ const xhrBE    = require('i18next-xhr-backend');
 const Events   = require('events');
 const localBE  = require('i18next-localstorage-backend');
 const backend  = require('i18next-chained-backend');
+const sprintf  = require('i18next-sprintf-postprocessor');
 const detector = require('i18next-browser-languagedetector');
 
 const store  = require('default/public/js/store');
@@ -73,7 +74,8 @@ class LocaleStore extends Events {
     // Use functions
     this.i18n
       .use(detector)
-      .use(backend);
+      .use(backend)
+      .use(sprintf);
 
     // Init
     this.i18n.init(load);
