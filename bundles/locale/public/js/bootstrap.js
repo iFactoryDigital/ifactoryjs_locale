@@ -25,6 +25,9 @@ class LocaleStore extends Events {
     // Set observable
     super(...args);
 
+    // reset max listeners
+    this.setMaxListeners(0);
+
     // Set i18n
     this.i18n = i18n;
 
