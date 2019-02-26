@@ -166,4 +166,4 @@ module.exports = built;
 /**
  * Add locale to window.eden
  */
-window.eden.i18n = this;
+window.eden.i18n = built;
