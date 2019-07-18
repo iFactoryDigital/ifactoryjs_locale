@@ -60,7 +60,7 @@ class LocaleHelper extends Helper {
   async build() {
     // Set langs and namespaces
     config.set('i18n.ns', compiled.namespaces);
-    config.set('i18n.lngs', compiled.locales);
+    config.set('i18n.lngs', config.get('i19n.lngs') || compiled.locales);
     config.set('i18n.cache.versions', {});
 
     // Set whitelist
