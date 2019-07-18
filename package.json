@@ -1,7 +1,7 @@
 {
   "name": "@edenjs/locale",
   "description": "",
-  "version": "2.0.12",
+  "version": "2.0.13",
   "dependencies": {
     "@edenjs/glob": "^1.0.0",
     "deepmerge": "^3.1.0",
