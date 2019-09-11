@@ -78,7 +78,7 @@ class LocaleController extends Controller {
    */
   langAction(lang, opts) {
     // Get session ID
-    const sessionID = opts.socket.request.cookie[config.get('session.key') || 'eden.session.id'];
+    const { sessionID } = opts;
 
     // Set language
     this.sessions[sessionID] = lang;
