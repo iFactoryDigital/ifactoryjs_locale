@@ -1,5 +1,5 @@
 {
-  "name": "@edenjs/locale",
+  "name": "@ifactoryjs/locale",
   "description": "",
   "version": "2.1.0",
   "dependencies": {
@@ -23,14 +23,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/eden-js/locale.git"
+    "url": "git+https://github.com/ifactorydigital/ifactoryjs_locale.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/eden-js/locale/issues"
+    "url": "https://github.com/ifactorydigital/ifactoryjs_locale/issues"
   },
-  "homepage": "https://github.com/eden-js/locale#readme",
+  "homepage": "https://github.com/ifactorydigital/ifactoryjs_locale#readme",
   "devDependencies": {
     "@edenjs/eslint-config-eden": "^2.0.14",
     "eslint": "^5.13.0",
